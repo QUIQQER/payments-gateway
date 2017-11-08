@@ -19,12 +19,25 @@ use QUI;
 class Gateway extends QUI\Control
 {
     /**
+     * Return the body of the control
+     * Here you can integrate the payment form, or forwarding functionality to the gateway
+     *
      * @return string
      */
     public function getBody()
     {
         $Engine = QUI::getTemplateManager()->getEngine();
 
+        /* @var $Order QUI\ERP\Order\OrderInProcess */
+        $Order = $this->getAttribute('Order');
+
+        /* @var $Payment QUI\ERP\Accounting\Payments\Api\AbstractPayment */
+        $Payment = $this->getAttribute('Payment');
+
+        $Engine->assign(array(
+            'Order'   => $Order,
+            'Payment' => $Payment
+        ));
 
         return $Engine->fetch(dirname(__FILE__).'/Gateway.html');
     }

@@ -46,6 +46,10 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
      */
     public function getGatewayDisplay(AbstractOrder $Order)
     {
-        return '';
+        $Control = new Gateway();
+        $Control->setAttribute('Order', $Order);
+        $Control->setAttribute('Payment', $this);
+
+        return $Control->create();
     }
 }

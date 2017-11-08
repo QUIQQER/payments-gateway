@@ -4,7 +4,7 @@
  * This file contains QUI\ERP\Accounting\Payments\Provider\Payments
  */
 
-namespace QUI\ERP\Payments\Gateways\Example\Provider;
+namespace QUI\ERP\Payments\Example\Provider;
 
 use QUI\ERP\Accounting\Payments\Api\AbstractPaymentProvider;
 use QUI\ERP\Payments\Gateways\Example;

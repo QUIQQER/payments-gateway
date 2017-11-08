@@ -7,12 +7,12 @@
         </locale>
 
         <locale name="payment.title">
-            <de><![CDATA[]]></de>
-            <en><![CDATA[]]></en>
+            <de><![CDATA[Test Payment Gateway]]></de>
+            <en><![CDATA[Test payment Gateway]]></en>
         </locale>
         <locale name="payment.description">
-            <de><![CDATA[]]></de>
-            <en><![CDATA[]]></en>
+            <de><![CDATA[Dies ist die Beschreibung des Test Payment Gateway]]></de>
+            <en><![CDATA[This is a description for the test payment Gateway]]></en>
         </locale>
     </groups>
 </locales>

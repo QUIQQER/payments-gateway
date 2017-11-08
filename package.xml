@@ -10,7 +10,7 @@
         </description>
 
         <provider>
-            <payment src="\QUI\ERP\Accounting\Payments\Provider\Payments"/>
+            <payment src="\QUI\ERP\Payments\Example\Provider\Payments"/>
         </provider>
 
     </package>

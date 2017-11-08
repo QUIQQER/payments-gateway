@@ -1,1 +1,6 @@
-My personal Jesus
+<form method="POST" action="/">
+    <input type="hidden" name="PAYMENT_TEST_GATEWAY" value="1"/>
+    <input type="hidden" name="orderId" value="{$Order->getId()}"/>
+
+    <input type="submit" value="Pay via the Test Gateway"/>
+</form>
