@@ -6,8 +6,8 @@
 
 namespace QUI\ERP\Payments\Example\Provider;
 
+use QUI\ERP\Payments\Example;
 use QUI\ERP\Accounting\Payments\Api\AbstractPaymentProvider;
-use QUI\ERP\Payments\Gateways\Example;
 
 /**
  * Class Provider

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * This file contains QUI\ERP\Payments\Gateways\Example\Payment
+ * This file contains QUI\ERP\Payments\Example\Payment
  */
 
-namespace QUI\ERP\Payments\Gateways\Example;
+namespace QUI\ERP\Payments\Example;
 
 use QUI;
 use QUI\ERP\Order\AbstractOrder;
@@ -13,7 +13,7 @@ use QUI\ERP\Order\AbstractOrder;
  * Class Payment
  * - This class is your main API point for your payment type
  *
- * @package QUI\ERP\Payments\Gateways\Example
+ * @package QUI\ERP\Payments\Example\Example
  */
 class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
 {
@@ -51,7 +51,7 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
      */
     public function getGatewayDisplay(AbstractOrder $Order)
     {
-        $Control = new GatewayPaymentDisplay();
+        $Control = new PaymentDisplay();
         $Control->setAttribute('Order', $Order);
         $Control->setAttribute('Payment', $this);
 
