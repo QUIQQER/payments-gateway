@@ -1,14 +1,18 @@
 Payment Gateway
 ========
 
+This payment gateway is an example of how a payment gateway can be implemented. 
+This is just an example and cannot be used for the live usage.
 
 Paketname:
 
     payments-gateway
 
 
-Features (Funktionen)
+Features
 --------
+
+
 
 Installation
 ------------

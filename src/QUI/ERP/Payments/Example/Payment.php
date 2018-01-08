@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * This file contains QUI\ERP\Payments\Gateways\Example\Payment
+ */
+
 namespace QUI\ERP\Payments\Gateways\Example;
 
 use QUI;
@@ -51,5 +55,25 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
         $Control->setAttribute('Payment', $this);
 
         return $Control->create();
+    }
+
+    /**
+     * @param QUI\ERP\Accounting\Payments\Gateway\Gateway $Gateway
+     */
+    public function executeGatewayPayment(QUI\ERP\Accounting\Payments\Gateway\Gateway $Gateway)
+    {
+        QUI\System\Log::writeRecursive('Execute Payment from the Test Gateway');
+
+        $Order  = $Gateway->getOrder();
+        $amount = $_REQUEST['amount'];
+
+        $Order->addComment('Add Payment from Example Gateway Payment: '.$amount);
+
+        QUI\System\Log::writeRecursive('Add Payment from Gateway Example; Amount: '.$amount);
+
+        return;
+        // @todo addPayment in order rein
+        $Invoice = $Order->getInvoice();
+        $Invoice->addPayment($_REQUEST['amount'], $this);
     }
 }

@@ -12,5 +12,13 @@
         <input type="submit" name="submit" value="CANCEL" style="width: 200px; padding: 20px; cursor: pointer;"/>
     </div>
 
+    <input type="hidden" name="pay" value="{$calculated.calculations.sum}"/>
+    <input type="hidden" name="orderHash" value="{$Order->getHash()}"/>
+
+    <input type="hidden" name="gatewayUrl" value="{$gatewayUrl}"/>
+    <input type="hidden" name="cancelUrl" value="{$cancelUrl}"/>
+    <input type="hidden" name="successUrl" value="{$successUrl}"/>
+    <input type="hidden" name="orderUrl" value="{$orderUrl}"/>
+
     <input type="hidden" name="PAYMENT_TEST_GATEWAY" value="1"/>
 </form>

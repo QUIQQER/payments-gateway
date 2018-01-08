@@ -34,9 +34,16 @@ class Gateway extends QUI\Control
         /* @var $Payment QUI\ERP\Accounting\Payments\Api\AbstractPayment */
         $Payment = $this->getAttribute('Payment');
 
+        $Gateway = QUI\ERP\Accounting\Payments\Gateway\Gateway::getInstance();
+        $Gateway->setOrderId($Order->getId());
+
         $Engine->assign(array(
-            'Order'   => $Order,
-            'Payment' => $Payment
+            'Order'      => $Order,
+            'Payment'    => $Payment,
+            'gatewayUrl' => $Gateway->getGatewayUrl(),
+            'cancelUrl'  => $Gateway->getCancelUrl(),
+            'successUrl' => $Gateway->getSuccessUrl(),
+            'orderUrl'   => $Gateway->getOrderUrl()
         ));
 
         return $Engine->fetch(dirname(__FILE__).'/Gateway.html');
