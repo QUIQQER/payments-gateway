@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains QUI\ERP\Payments\Gateways\Example\Gateway
+ * This file contains QUI\ERP\Payments\Gateways\Example\GatewayPaymentDisplay
  */
 
 namespace QUI\ERP\Payments\Gateways\Example;
@@ -9,14 +9,14 @@ namespace QUI\ERP\Payments\Gateways\Example;
 use QUI;
 
 /**
- * Class Gateway
+ * Class GatewayPaymentDisplay
  * - This class provides the display for the gateway.
  * - The gateway control allows the user to pay with the payment method
  *      -> by clicking on the button the user is directed to the payment service provider
  *
  * @package QUI\ERP\Payments\Gateways\Example
  */
-class Gateway extends QUI\Control
+class GatewayPaymentDisplay extends QUI\Control
 {
     /**
      * Return the body of the control
@@ -46,6 +46,6 @@ class Gateway extends QUI\Control
             'orderUrl'   => $Gateway->getOrderUrl()
         ));
 
-        return $Engine->fetch(dirname(__FILE__).'/Gateway.html');
+        return $Engine->fetch(dirname(__FILE__).'/GatewayPaymentDisplay.html');
     }
 }

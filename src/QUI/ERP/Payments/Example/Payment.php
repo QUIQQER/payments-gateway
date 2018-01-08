@@ -11,6 +11,7 @@ use QUI\ERP\Order\AbstractOrder;
 
 /**
  * Class Payment
+ * - This class is your main API point for your payment type
  *
  * @package QUI\ERP\Payments\Gateways\Example
  */
@@ -50,7 +51,7 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
      */
     public function getGatewayDisplay(AbstractOrder $Order)
     {
-        $Control = new Gateway();
+        $Control = new GatewayPaymentDisplay();
         $Control->setAttribute('Order', $Order);
         $Control->setAttribute('Payment', $this);
 

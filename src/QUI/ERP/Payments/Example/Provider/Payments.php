@@ -12,6 +12,7 @@ use QUI\ERP\Payments\Gateways\Example;
 /**
  * Class Provider
  * - provides the example payment method to the system
+ * - You need to create a AbstractPaymentProvider to extend the QUIQQER Payment System with you Payment Type
  *
  * @package QUI\ERP\Payments\Gateways\Example
  */

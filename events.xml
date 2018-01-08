@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <events>
-    <event on="onRequest" fire="\QUI\ERP\Payments\Example\Server::onRequest"/>
+    <event on="onRequest" fire="\QUI\ERP\Payments\Example\Server\Server::onRequest"/>
 </events>

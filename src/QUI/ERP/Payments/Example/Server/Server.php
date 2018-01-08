@@ -1,10 +1,10 @@
 <?php
 
 /**
- * This file contains QUI\ERP\Payments\Example\Server
+ * This file contains QUI\ERP\Payments\Example\Server\Server
  */
 
-namespace QUI\ERP\Payments\Example;
+namespace QUI\ERP\Payments\Example\Server;
 
 use QUI;
 
@@ -26,6 +26,9 @@ class Server
     /**
      * on request
      * we check the PAYMENT_TEST_GATEWAY post value, if exists, we have a payment
+     *
+     * @param QUI\Rewrite $Rewrite
+     * @param $url
      */
     public static function onRequest(QUI\Rewrite $Rewrite, $url)
     {
@@ -60,6 +63,7 @@ class Server
 
             // send request
             file_get_contents($paymentUrl);
+            echo 'Payment successfully completed';
             exit;
         }
 
