@@ -61,7 +61,7 @@ class Server
 
             $paymentUrl = $paymentUrl.'&'.http_build_query($query);
 
-            // send request
+            // send request from the payment provider
             file_get_contents($paymentUrl);
             echo 'Payment successfully completed';
             exit;

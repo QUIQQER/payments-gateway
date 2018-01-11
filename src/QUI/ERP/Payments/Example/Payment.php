@@ -8,6 +8,7 @@ namespace QUI\ERP\Payments\Example;
 
 use QUI;
 use QUI\ERP\Order\AbstractOrder;
+use QUI\ERP\Accounting\Payments\Transactions\Factory as Transactions;
 
 /**
  * Class Payment
@@ -63,18 +64,36 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
      */
     public function executeGatewayPayment(QUI\ERP\Accounting\Payments\Gateway\Gateway $Gateway)
     {
-        QUI\System\Log::writeRecursive('Execute Payment from the Test Gateway');
+        QUI\ERP\Debug::getInstance()->log('Execute Payment from the Test Gateway');
 
-        $Order  = $Gateway->getOrder();
-        $amount = $_REQUEST['amount'];
+        $Order    = $Gateway->getOrder();
+        $amount   = $_REQUEST['amount'];
+        $Currency = QUI\ERP\Currency\Handler::getCurrency('EUR');
 
-        $Order->addComment('Add Payment from Example Gateway Payment: '.$amount);
+        // variable payment data
+        $paymentData = array(
+            'payment'  => $this->getName(),
+            'title'    => $this->getTitle(),
+            'settings' => $this->getSettings()
+        );
 
-        QUI\System\Log::writeRecursive('Add Payment from Gateway Example; Amount: '.$amount);
+        Transactions::createPaymentTransaction(
+            $amount,
+            $Currency,
+            $Order->getHash(),
+            $this->getName(),
+            $paymentData
+        );
 
-        return;
-        // @todo addPayment in order rein
-        $Invoice = $Order->getInvoice();
-        $Invoice->addPayment($_REQUEST['amount'], $this);
+//
+//        $Order->addComment('Add Payment from Example Gateway Payment: '.$amount);
+//        $Order->addPayment($_REQUEST['amount'], $this);
+//
+//        QUI\System\Log::writeRecursive('Add Payment from Gateway Example; Amount: '.$amount);
+//
+//        return;
+//        // @todo addPayment in order rein
+//        $Invoice = $Order->getInvoice();
+//        $Invoice->addPayment($_REQUEST['amount'], $this);
     }
 }
