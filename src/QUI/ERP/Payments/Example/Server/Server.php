@@ -29,6 +29,8 @@ class Server
      *
      * @param QUI\Rewrite $Rewrite
      * @param $url
+     *
+     * @throws QUI\Exception
      */
     public static function onRequest(QUI\Rewrite $Rewrite, $url)
     {

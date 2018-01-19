@@ -61,11 +61,10 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
 
     /**
      * @param QUI\ERP\Accounting\Payments\Gateway\Gateway $Gateway
+     * @throws QUI\Exception
      */
     public function executeGatewayPayment(QUI\ERP\Accounting\Payments\Gateway\Gateway $Gateway)
     {
-        QUI\ERP\Debug::getInstance()->log('Execute Payment from the Test Gateway');
-
         $Order    = $Gateway->getOrder();
         $amount   = $_REQUEST['amount'];
         $Currency = QUI\ERP\Currency\Handler::getCurrency('EUR');
