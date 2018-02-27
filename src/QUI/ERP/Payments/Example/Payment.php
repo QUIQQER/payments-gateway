@@ -8,7 +8,6 @@ namespace QUI\ERP\Payments\Example;
 
 use QUI;
 use QUI\ERP\Order\AbstractOrder;
-use QUI\ERP\Accounting\Payments\Transactions\Factory as Transactions;
 
 /**
  * Class Payment
@@ -32,6 +31,17 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
     public function getDescription()
     {
         return $this->getLocale()->get('quiqqer/payments-gateway', 'payment.description');
+    }
+
+    /**
+     * @param string $hash - Vorgangsnummer - hash number - procedure number
+     * @return bool
+     */
+    public function isSuccessful($hash)
+    {
+        // $status = ERP::getPaymentStatus($hash);
+
+        return false;
     }
 
     /**
@@ -76,23 +86,9 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
             'settings' => $this->getSettings()
         );
 
-        Transactions::createPaymentTransaction(
-            $amount,
-            $Currency,
-            $Order->getHash(),
-            $this->getName(),
-            $paymentData
-        );
+        // Gateway::paymentError();
+        // Gateway::paymentPending();
 
-//
-//        $Order->addComment('Add Payment from Example Gateway Payment: '.$amount);
-//        $Order->addPayment($_REQUEST['amount'], $this);
-//
-//        QUI\System\Log::writeRecursive('Add Payment from Gateway Example; Amount: '.$amount);
-//
-//        return;
-//        // @todo addPayment in order rein
-//        $Invoice = $Order->getInvoice();
-//        $Invoice->addPayment($_REQUEST['amount'], $this);
+        $Gateway->purchase($amount, $Currency, $Order, $this, $paymentData);
     }
 }
