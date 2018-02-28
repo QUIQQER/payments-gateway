@@ -58,13 +58,17 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
      * If the Payment method is a payment gateway, it can return a gateway display
      *
      * @param AbstractOrder $Order
+     * @param QUI\ERP\Order\Controls\AbstractOrderingStep $Step
      * @return string
      */
-    public function getGatewayDisplay(AbstractOrder $Order)
+    public function getGatewayDisplay(AbstractOrder $Order, $Step = null)
     {
         $Control = new PaymentDisplay();
         $Control->setAttribute('Order', $Order);
         $Control->setAttribute('Payment', $this);
+
+        $Order->setPaymentData('payment-test-gateway-inProcess', 'test-value');
+        $Order->update();
 
         return $Control->create();
     }
@@ -85,6 +89,9 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
             'title'    => $this->getTitle(),
             'settings' => $this->getSettings()
         );
+
+        $Order->setPaymentData('payment-test-gateway-order', 'test-value');
+        $Order->update(QUI::getUsers()->getSystemUser());
 
         // Gateway::paymentError();
         // Gateway::paymentPending();

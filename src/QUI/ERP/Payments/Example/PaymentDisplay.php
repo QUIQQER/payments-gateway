@@ -26,7 +26,14 @@ class PaymentDisplay extends QUI\Control
      */
     public function getBody()
     {
-        $Engine = QUI::getTemplateManager()->getEngine();
+        try {
+            $Engine = QUI::getTemplateManager()->getEngine();
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::writeDebugException($Exception);
+
+            return '';
+        }
+
 
         /* @var $Order QUI\ERP\Order\OrderInProcess */
         $Order = $this->getAttribute('Order');
@@ -35,7 +42,7 @@ class PaymentDisplay extends QUI\Control
         $Payment = $this->getAttribute('Payment');
 
         $Gateway = QUI\ERP\Accounting\Payments\Gateway\Gateway::getInstance();
-        $Gateway->setOrderId($Order->getId());
+        $Gateway->setOrder($Order);
 
         $Engine->assign(array(
             'Order'      => $Order,
