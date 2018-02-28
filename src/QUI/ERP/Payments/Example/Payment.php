@@ -58,7 +58,7 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
      * If the Payment method is a payment gateway, it can return a gateway display
      *
      * @param AbstractOrder $Order
-     * @param QUI\ERP\Order\Controls\AbstractOrderingStep $Step
+     * @param QUI\ERP\Order\Controls\AbstractOrderingStep|null $Step
      * @return string
      */
     public function getGatewayDisplay(AbstractOrder $Order, $Step = null)
