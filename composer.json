@@ -1,9 +1,9 @@
 {
   "name": "quiqqer\/payments-gateway",
   "type": "quiqqer-module",
-  "description": "",
-  "version": "dev-master",
-  "license": "",
+  "description": "This payment gateway is an example of how a payment gateway can be implemented. This is just an example and cannot be used for the live usage.",
+  "version": "dev-dev",
+  "license": "MIT",
   "authors": [
     {
       "name": "Henning Leutz",
