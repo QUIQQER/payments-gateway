@@ -55,6 +55,14 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
     }
 
     /**
+     * test -> unique
+     */
+    public function isUnique()
+    {
+        return true;
+    }
+
+    /**
      * If the Payment method is a payment gateway, it can return a gateway display
      *
      * @param AbstractOrder $Order
@@ -84,11 +92,11 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
         $Currency = QUI\ERP\Currency\Handler::getCurrency('EUR');
 
         // variable payment data
-        $paymentData = array(
+        $paymentData = [
             'payment'  => $this->getName(),
             'title'    => $this->getTitle(),
             'settings' => $this->getSettings()
-        );
+        ];
 
         $Order->setPaymentData('payment-test-gateway-order', 'test-value');
         $Order->update(QUI::getUsers()->getSystemUser());
