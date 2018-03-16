@@ -2,7 +2,7 @@
   "name": "quiqqer\/payments-gateway",
   "type": "quiqqer-module",
   "description": "This payment gateway is an example of how a payment gateway can be implemented. This is just an example and cannot be used for the live usage.",
-  "version": "dev-dev",
+  "version": "dev-master",
   "license": "MIT",
   "authors": [
     {
