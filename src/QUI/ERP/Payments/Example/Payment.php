@@ -93,9 +93,8 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
 
         // variable payment data
         $paymentData = [
-            'payment'  => $this->getName(),
-            'title'    => $this->getTitle(),
-            'settings' => $this->getSettings()
+            'payment' => $this->getName(),
+            'title'   => $this->getTitle()
         ];
 
         $Order->setPaymentData('payment-test-gateway-order', 'test-value');

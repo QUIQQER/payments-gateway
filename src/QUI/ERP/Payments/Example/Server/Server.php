@@ -55,7 +55,9 @@ class Server
         // payment
         if (isset($_POST['submit']) && $_POST['submit'] === 'PAY') {
             // send payment
-            $Gateway    = new QUI\ERP\Accounting\Payments\Gateway\Gateway();
+            $Gateway = new QUI\ERP\Accounting\Payments\Gateway\Gateway();
+            $Gateway->setOrder($_POST['orderHash']);
+
             $paymentUrl = $Gateway->getPaymentProviderUrl();
 
             $query['amount']    = $_POST['pay'];
@@ -65,7 +67,25 @@ class Server
 
             // send request from the payment provider
             file_get_contents($paymentUrl);
-            echo 'Payment successfully completed';
+
+            $url = $Gateway->getOrderUrl();
+
+            if (empty($url)) {
+                $url = URL_DIR;
+            }
+
+            // forwarding to the cancel url
+            $Redirect = new RedirectResponse($url);
+            $Redirect->setStatusCode(Response::HTTP_SEE_OTHER);
+            $Redirect->setContent(
+                'Payment successfully completed. In some Seconds you will be get back to the Order'
+            );
+
+            $Redirect->headers->set('Refresh', 5);
+
+            echo $Redirect->getContent();
+            $Redirect->send();
+
             exit;
         }
 
@@ -92,7 +112,7 @@ class Server
         $Articles->hideHeader();
         $Articles->calc();
 
-        $Engine->assign(array(
+        $Engine->assign([
             'Order'      => $Order,
             'Articles'   => $Articles,
             'calculated' => $Articles->toArray(),
@@ -101,7 +121,7 @@ class Server
             'gatewayUrl' => $_POST['gatewayUrl'],
             'cancelUrl'  => $_POST['cancelUrl'],
             'successUrl' => $_POST['successUrl']
-        ));
+        ]);
 
         echo $Engine->fetch(dirname(__FILE__).'/Server.Result.html');
         exit;
