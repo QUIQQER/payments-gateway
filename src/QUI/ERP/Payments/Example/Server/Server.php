@@ -95,17 +95,10 @@ class Server
         $Handler = QUI\ERP\Order\Handler::getInstance();
 
         /* @var $Order QUI\ERP\Order\Order */
-        try {
-            $Order = $Handler->get($_POST['orderId']);
-        } catch (QUI\ERP\Order\Exception $Exception) {
-            try {
-                $Order = $Handler->getOrderInProcess($_POST['orderId']);
-            } catch (QUI\ERP\Order\Exception $Exception) {
-                echo $Exception->getMessage();
-                exit;
-            }
-        }
+        $Gateway = new QUI\ERP\Accounting\Payments\Gateway\Gateway();
+        $Gateway->setOrder($_POST['orderHash']);
 
+        $Order  = $Gateway->getOrder();
         $Engine = QUI::getTemplateManager()->getEngine();
 
         $Articles = $Order->getArticles();
