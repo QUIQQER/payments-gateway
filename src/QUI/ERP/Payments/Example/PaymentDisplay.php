@@ -26,6 +26,11 @@ class PaymentDisplay extends QUI\Control
      */
     public function getBody()
     {
+        $this->setAttribute(
+            'data-qui',
+            'package/quiqqer/payments-gateway/bin/controls/frontend/PaymentDisplay'
+        );
+
         try {
             $Engine = QUI::getTemplateManager()->getEngine();
         } catch (QUI\Exception $Exception) {
@@ -44,14 +49,14 @@ class PaymentDisplay extends QUI\Control
         $Gateway = QUI\ERP\Accounting\Payments\Gateway\Gateway::getInstance();
         $Gateway->setOrder($Order);
 
-        $Engine->assign(array(
+        $Engine->assign([
             'Order'      => $Order,
             'Payment'    => $Payment,
             'gatewayUrl' => $Gateway->getGatewayUrl(),
             'cancelUrl'  => $Gateway->getCancelUrl(),
             'successUrl' => $Gateway->getSuccessUrl(),
             'orderUrl'   => $Gateway->getOrderUrl()
-        ));
+        ]);
 
         return $Engine->fetch(dirname(__FILE__).'/PaymentDisplay.html');
     }

@@ -59,7 +59,7 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
      */
     public function isUnique()
     {
-        return true;
+        return false;
     }
 
     /**
