@@ -135,11 +135,13 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
      * @param QUI\ERP\Accounting\Payments\Transactions\Transaction $Transaction
      * @param $amount
      * @param string $message
+     * @param string|bool $hash
      */
     public function refund(
         Transaction $Transaction,
         $amount,
-        $message = ''
+        $message = '',
+        $hash = false
     ) {
         // example for a refund
 
@@ -149,16 +151,23 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
 
         // execute this code if the payment refund is successfully done
         try {
+            if ($hash === false) {
+                $hash = $Transaction->getHash();
+            }
+
             // create a refund transaction
             $RefundTransaction = TransactionFactory::createPaymentRefundTransaction(
                 $amount,
                 $Transaction->getCurrency(),
-                $Transaction->getHash(),
+                $hash,
                 $Transaction->getPayment()->getName(),
                 [
                     'isRefund' => 1,
                     'message'  => $message
-                ]
+                ],
+                null,
+                false,
+                $Transaction->getGlobalProcessId()
             );
 
             // execute the
