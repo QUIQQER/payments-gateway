@@ -8,6 +8,8 @@ namespace QUI\ERP\Payments\Example;
 
 use QUI;
 use QUI\ERP\Order\AbstractOrder;
+use QUI\ERP\Accounting\Payments\Transactions\Transaction;
+use QUI\ERP\Accounting\Payments\Transactions\Factory as TransactionFactory;
 
 /**
  * Class Payment
@@ -39,6 +41,16 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
      */
     public function isSuccessful($hash)
     {
+        try {
+            $Order = QUI\ERP\Order\Handler::getInstance()->getOrderByHash($hash);
+
+            if ($Order->isPaid()) {
+                return true;
+            }
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::writeException($Exception);
+        }
+
         // $status = ERP::getPaymentStatus($hash);
 
         return false;
@@ -104,5 +116,59 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
         // Gateway::paymentPending();
 
         $Gateway->purchase($amount, $Currency, $Order, $this, $paymentData);
+    }
+
+
+    /**
+     * This payment has refund support
+     *
+     * @return bool
+     */
+    public function refundSupport()
+    {
+        return true;
+    }
+
+    /**
+     * Execute a refund
+     *
+     * @param QUI\ERP\Accounting\Payments\Transactions\Transaction $Transaction
+     * @param $amount
+     * @param string $message
+     */
+    public function refund(
+        Transaction $Transaction,
+        $amount,
+        $message = ''
+    ) {
+        // example for a refund
+
+        // this here can also run asynchronously or take longer
+        // ....
+        // ....
+
+        // execute this code if the payment refund is successfully done
+        try {
+            // create a refund transaction
+            $RefundTransaction = TransactionFactory::createPaymentRefundTransaction(
+                $amount,
+                $Transaction->getCurrency(),
+                $Transaction->getHash(),
+                $Transaction->getPayment()->getName(),
+                [
+                    'isRefund' => 1,
+                    'message'  => $message
+                ]
+            );
+
+            // execute the
+            QUI::getEvents()->fireEvent('transactionSuccessfullyRefunded', [
+                $RefundTransaction,
+                $this,
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::writeDebugException($Exception);
+            QUI\System\Log::writeException($Exception);
+        }
     }
 }
