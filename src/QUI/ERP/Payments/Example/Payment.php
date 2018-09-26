@@ -115,7 +115,8 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
         // Gateway::paymentError();
         // Gateway::paymentPending();
 
-        $Gateway->purchase($amount, $Currency, $Order, $this, $paymentData);
+        $Transaction = $Gateway->purchase($amount, $Currency, $Order, $this, $paymentData);
+        //$Transaction->pending();
     }
 
 
