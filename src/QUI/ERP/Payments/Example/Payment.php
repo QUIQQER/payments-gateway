@@ -112,7 +112,7 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
         }
 
         $Order    = $Gateway->getOrder();
-        $amount   = $_REQUEST['amount'];
+        $amount   = floatval($_REQUEST['amount']);
         $Currency = $Order->getCurrency();
 
         // variable payment data
@@ -126,6 +126,14 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
 
         // Gateway::paymentError();
         // Gateway::paymentPending();
+
+        QUI\System\Log::writeRecursive([
+            $amount,
+            $Currency->getCode(),
+            $Order->getHash(),
+            $this->getTitle(),
+            $paymentData
+        ]);
 
         $Transaction = $Gateway->purchase($amount, $Currency, $Order, $this, $paymentData);
         //$Transaction->pending();
