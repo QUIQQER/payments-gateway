@@ -7,6 +7,7 @@
 namespace QUI\ERP\Payments\Example\Server;
 
 use QUI;
+use QUI\ERP\Accounting\Payments\Gateway\Gateway;
 
 use \Symfony\Component\HttpFoundation\RedirectResponse;
 use \Symfony\Component\HttpFoundation\Response;
@@ -52,21 +53,25 @@ class Server
             exit;
         }
 
+
         // payment
         if (isset($_POST['submit']) && $_POST['submit'] === 'PAY') {
             // send payment
             $Gateway = new QUI\ERP\Accounting\Payments\Gateway\Gateway();
             $Gateway->setOrder($_POST['orderHash']);
 
-            $paymentUrl = $Gateway->getPaymentProviderUrl();
+            $paymentUrl = $Gateway->getGatewayUrl([
+                Gateway::URL_PARAM_GATEWAY_PAYMENT => 1,
+                Gateway::URL_PARAM_USER_REDIRECTED => 0
+            ]);
 
             $query['amount']    = $_POST['pay'];
             $query['orderHash'] = $_POST['orderHash'];
 
-            $paymentUrl = $paymentUrl.'&'.http_build_query($query);
+            $paymentUrl = $paymentUrl.'&'.\http_build_query($query);
 
             // send request from the payment provider
-            file_get_contents($paymentUrl);
+            \file_get_contents($paymentUrl);
 
             $url = $Gateway->getOrderUrl();
 
@@ -89,10 +94,25 @@ class Server
             exit;
         }
 
+        if (!isset($_POST['orderId']) || !isset($_POST['orderHash'])) {
+            $Gateway = new QUI\ERP\Accounting\Payments\Gateway\Gateway();
+            $url     = $Gateway->getOrderUrl();
+
+            if (empty($url)) {
+                $url = URL_DIR;
+            }
+
+            $Redirect = new RedirectResponse($url);
+            $Redirect->setStatusCode(Response::HTTP_SEE_OTHER);
+
+            echo $Redirect->getContent();
+            $Redirect->send();
+
+            exit;
+        }
+
         // $_POST['orderId'];
         // $_POST['orderUrl'];
-
-        $Handler = QUI\ERP\Order\Handler::getInstance();
 
         /* @var $Order QUI\ERP\Order\Order */
         $Gateway = new QUI\ERP\Accounting\Payments\Gateway\Gateway();
@@ -116,7 +136,7 @@ class Server
             'successUrl' => $_POST['successUrl']
         ]);
 
-        echo $Engine->fetch(dirname(__FILE__).'/Server.Result.html');
+        echo $Engine->fetch(\dirname(__FILE__).'/Server.Result.html');
         exit;
     }
 }

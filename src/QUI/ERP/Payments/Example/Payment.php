@@ -10,6 +10,8 @@ use QUI;
 use QUI\ERP\Order\AbstractOrder;
 use QUI\ERP\Accounting\Payments\Transactions\Transaction;
 use QUI\ERP\Accounting\Payments\Transactions\Factory as TransactionFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class Payment
@@ -99,9 +101,19 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
      */
     public function executeGatewayPayment(QUI\ERP\Accounting\Payments\Gateway\Gateway $Gateway)
     {
+        if (isset($_REQUEST['canceled'])) {
+            $Redirect = new RedirectResponse($Gateway->getOrderUrl());
+            $Redirect->setStatusCode(Response::HTTP_SEE_OTHER);
+
+            echo $Redirect->getContent();
+            $Redirect->send();
+
+            return;
+        }
+
         $Order    = $Gateway->getOrder();
-        $amount   = $_REQUEST['amount'];
-        $Currency = QUI\ERP\Currency\Handler::getCurrency('EUR');
+        $amount   = floatval($_REQUEST['amount']);
+        $Currency = $Order->getCurrency();
 
         // variable payment data
         $paymentData = [
@@ -114,6 +126,14 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
 
         // Gateway::paymentError();
         // Gateway::paymentPending();
+
+        QUI\System\Log::writeRecursive([
+            $amount,
+            $Currency->getCode(),
+            $Order->getHash(),
+            $this->getTitle(),
+            $paymentData
+        ]);
 
         $Transaction = $Gateway->purchase($amount, $Currency, $Order, $this, $paymentData);
         //$Transaction->pending();
