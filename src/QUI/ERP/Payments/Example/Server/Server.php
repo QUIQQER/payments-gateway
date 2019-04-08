@@ -7,6 +7,7 @@
 namespace QUI\ERP\Payments\Example\Server;
 
 use QUI;
+use QUI\ERP\Accounting\Payments\Gateway\Gateway;
 
 use \Symfony\Component\HttpFoundation\RedirectResponse;
 use \Symfony\Component\HttpFoundation\Response;
@@ -59,7 +60,10 @@ class Server
             $Gateway = new QUI\ERP\Accounting\Payments\Gateway\Gateway();
             $Gateway->setOrder($_POST['orderHash']);
 
-            $paymentUrl = $Gateway->getPaymentProviderUrl();
+            $paymentUrl = $Gateway->getGatewayUrl([
+                Gateway::URL_PARAM_GATEWAY_PAYMENT => 1,
+                Gateway::URL_PARAM_USER_REDIRECTED => 0
+            ]);
 
             $query['amount']    = $_POST['pay'];
             $query['orderHash'] = $_POST['orderHash'];
