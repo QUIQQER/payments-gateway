@@ -1,29 +1,28 @@
 {
-  "name": "quiqqer\/payments-gateway",
-  "type": "quiqqer-module",
-  "description": "This payment gateway is an example of how a payment gateway can be implemented. This is just an example and cannot be used for the live usage.",
-  "version": "dev-master",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Henning Leutz",
-      "email": "leutz@pcsg.de",
-      "homepage": "http:\/\/www.pcsg.de",
-      "role": "Developer"
+    "name": "quiqqer\/payments-gateway",
+    "type": "quiqqer-module",
+    "description": "This payment gateway is an example of how a payment gateway can be implemented. This is just an example and cannot be used for the live usage.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Henning Leutz",
+            "email": "leutz@pcsg.de",
+            "homepage": "http:\/\/www.pcsg.de",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "support@pcsg.de",
+        "url": "http:\/\/www.pcsg.de"
+    },
+    "require": {
+        "php": ">=5.3",
+        "quiqqer\/quiqqer": "1.*|dev-master|dev-dev",
+        "quiqqer\/payments": "dev-master|dev-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "QUI\\ERP\\Payments\\": "src\/QUI\/ERP\/Payments"
+        }
     }
-  ],
-  "support": {
-    "email": "support@pcsg.de",
-    "url": "http:\/\/www.pcsg.de"
-  },
-  "require": {
-    "php": ">=5.3",
-    "quiqqer\/quiqqer": "1.*|dev-master|dev-dev",
-    "quiqqer/payments": "dev-master|dev-dev"
-  },
-  "autoload": {
-    "psr-4": {
-      "QUI\\ERP\\Payments\\": "src\/QUI\/ERP\/Payments"
-    }
-  }
 }
