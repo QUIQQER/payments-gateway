@@ -8,9 +8,8 @@ namespace QUI\ERP\Payments\Example\Server;
 
 use QUI;
 use QUI\ERP\Accounting\Payments\Gateway\Gateway;
-
-use \Symfony\Component\HttpFoundation\RedirectResponse;
-use \Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * #### IMPORTANT #####
@@ -68,7 +67,7 @@ class Server
             $query['amount']    = $_POST['pay'];
             $query['orderHash'] = $_POST['orderHash'];
 
-            $paymentUrl = $paymentUrl.'&'.\http_build_query($query);
+            $paymentUrl = $paymentUrl . '&' . \http_build_query($query);
 
             // send request from the payment provider
             \file_get_contents($paymentUrl);
@@ -136,7 +135,7 @@ class Server
             'successUrl' => $_POST['successUrl']
         ]);
 
-        echo $Engine->fetch(\dirname(__FILE__).'/Server.Result.html');
+        echo $Engine->fetch(\dirname(__FILE__) . '/Server.Result.html');
         exit;
     }
 }

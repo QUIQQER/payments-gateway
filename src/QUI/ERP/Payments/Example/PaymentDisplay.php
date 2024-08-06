@@ -58,6 +58,6 @@ class PaymentDisplay extends QUI\Control
             'orderUrl'   => $Gateway->getOrderUrl()
         ]);
 
-        return $Engine->fetch(dirname(__FILE__).'/PaymentDisplay.html');
+        return $Engine->fetch(dirname(__FILE__) . '/PaymentDisplay.html');
     }
 }
