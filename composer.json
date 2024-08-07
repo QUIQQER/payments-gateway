@@ -17,8 +17,8 @@
     },
     "require": {
         "php": ">=5.3",
-        "quiqqer\/quiqqer": "1.*|dev-master|dev-dev",
-        "quiqqer\/payments": "dev-master|dev-dev"
+        "quiqqer\/quiqqer": "^1",
+        "quiqqer\/payments": "^2"
     },
     "autoload": {
         "psr-4": {
