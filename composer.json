@@ -16,8 +16,8 @@
         "url": "http://www.pcsg.de"
     },
     "require": {
-        "php": ">=5.3",
-        "quiqqer/quiqqer": "^1",
+        "php": "^8.2",
+        "quiqqer/core": "^2",
         "quiqqer/payments": "^2"
     },
     "autoload": {
