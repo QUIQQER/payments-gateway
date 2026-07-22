@@ -57,10 +57,7 @@ final class PaymentTest extends TestCase
     {
         $_REQUEST['canceled'] = '1';
 
-        $Gateway = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getOrderUrl'])
-            ->getMock();
+        $Gateway = $this->createMock(Gateway::class);
         $Gateway->expects(self::once())
             ->method('getOrderUrl')
             ->willReturn('/order');
@@ -85,10 +82,7 @@ final class PaymentTest extends TestCase
             ->with('payment-test-gateway-order', 'test-value');
         $Order->expects(self::once())->method('update');
 
-        $Gateway = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getOrder', 'purchase'])
-            ->getMock();
+        $Gateway = $this->createMock(Gateway::class);
         $Gateway->method('getOrder')->willReturn($Order);
         $Gateway->expects(self::once())
             ->method('purchase')
@@ -106,10 +100,7 @@ final class PaymentTest extends TestCase
 
     public function testGatewayPaymentRequiresAnOrder(): void
     {
-        $Gateway = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getOrder'])
-            ->getMock();
+        $Gateway = $this->createMock(Gateway::class);
         $Gateway->method('getOrder')->willReturn(null);
 
         $this->expectException(QUI\Exception::class);
@@ -121,10 +112,7 @@ final class PaymentTest extends TestCase
     {
         $_REQUEST['amount'] = 'not-a-number';
 
-        $Gateway = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getOrder'])
-            ->getMock();
+        $Gateway = $this->createMock(Gateway::class);
         $Gateway->method('getOrder')->willReturn($this->createMock(AbstractOrder::class));
 
         $this->expectException(QUI\Exception::class);

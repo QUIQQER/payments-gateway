@@ -11,5 +11,9 @@ parameters:
         - tests
     bootstrapFiles:
         - tests/phpstan-bootstrap.php
+    scanFiles:
+        - tests/phpstan-shims/PHPUnit/Framework/MockObject/InvocationMocker.php
+        - tests/phpstan-shims/PHPUnit/Framework/MockObject/MockObject.php
+        - tests/phpstan-shims/PHPUnit/Framework/TestCase.php
     treatPhpDocTypesAsCertain: false
     tipsOfTheDay: false

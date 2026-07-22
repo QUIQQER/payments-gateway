@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace QUI\Tests\ERP\Payments\Example\Unit;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use QUI;
 use QUI\ERP\Accounting\ArticleList;
 use QUI\ERP\Accounting\Payments\Gateway\Gateway;
@@ -154,16 +155,15 @@ final class ServerTest extends TestCase
 
         self::assertInstanceOf(Response::class, $Response);
         self::assertSame(Response::HTTP_OK, $Response->getStatusCode());
-        self::assertStringContainsString('#123', $Response->getContent());
-        self::assertStringContainsString('Rendered article list', $Response->getContent());
+        $content = $Response->getContent();
+        self::assertNotFalse($content);
+        self::assertStringContainsString('#123', $content);
+        self::assertStringContainsString('Rendered article list', $content);
     }
 
-    private function gatewayMock(): Gateway
+    private function gatewayMock(): Gateway&MockObject
     {
-        $Gateway = $this->getMockBuilder(Gateway::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['setOrder', 'getOrder', 'getCancelUrl', 'getOrderUrl', 'getGatewayUrl'])
-            ->getMock();
+        $Gateway = $this->createMock(Gateway::class);
         $Gateway->expects(self::once())
             ->method('setOrder')
             ->with('phpunit-order');
@@ -171,7 +171,7 @@ final class ServerTest extends TestCase
         return $Gateway;
     }
 
-    private function gatewayWithCalculatedAmount(mixed $amount): Gateway
+    private function gatewayWithCalculatedAmount(mixed $amount): Gateway&MockObject
     {
         $Articles = $this->createMock(ArticleList::class);
         $Articles->expects(self::once())->method('hideHeader');
