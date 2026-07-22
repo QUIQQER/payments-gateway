@@ -17,3 +17,12 @@ phpunit-php8.2:
 phpunit-php8.3:
   rules:
     - when: never
+
+# No QUIQQER 1 testing images exist for PHP 8.4 or newer
+phpunit-php8.4:
+  rules:
+    - when: never
+
+phpunit-php8.5:
+  rules:
+    - when: never
