@@ -1,19 +1,21 @@
 {
     "name": "quiqqer/payments-gateway",
     "type": "quiqqer-module",
-    "description": "This payment gateway is an example of how a payment gateway can be implemented. This is just an example and cannot be used for the live usage.",
+    "description": "Example implementation of a payment gateway for QUIQQER.",
+    "homepage": "https://www.quiqqer.com/",
     "license": "MIT",
     "authors": [
         {
-            "name": "Henning Leutz",
-            "email": "leutz@pcsg.de",
-            "homepage": "http://www.pcsg.de",
-            "role": "Developer"
+            "name": "PCSG - Computer & Internet Service OHG",
+            "email": "info@quiqqer.com",
+            "homepage": "https://www.quiqqer.com",
+            "role": "Maintainer"
         }
     ],
     "support": {
-        "email": "support@pcsg.de",
-        "url": "http://www.pcsg.de"
+        "email": "info@quiqqer.com",
+        "issues": "https://dev.quiqqer.com/quiqqer/payments-gateway/-/issues",
+        "source": "https://dev.quiqqer.com/quiqqer/payments-gateway"
     },
     "require": {
         "php": "^8.2",

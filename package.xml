@@ -1,17 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <quiqqer>
     <package>
-
         <title>
             <locale group="quiqqer/payments-gateway" var="package.title"/>
         </title>
 
         <description>
-            <locale group="quiqqer/payments-gateway" var="package.title"/>
+            <locale group="quiqqer/payments-gateway" var="package.description"/>
         </description>
+
+        <image src="URL_OPT_DIR/quiqqer/payments-gateway/bin/images/Logo.png"/>
 
         <provider>
             <payment src="\QUI\ERP\Payments\Example\Provider\Payments"/>
         </provider>
 
+        <support>
+            <email><![CDATA[info@quiqqer.com]]></email>
+            <source><![CDATA[https://dev.quiqqer.com/quiqqer/payments-gateway]]></source>
+            <issues><![CDATA[https://dev.quiqqer.com/quiqqer/payments-gateway/-/issues]]></issues>
+        </support>
+
+        <copyright>
+            <name><![CDATA[PCSG - Computer & Internet Service OHG]]></name>
+            <license><![CDATA[MIT]]></license>
+        </copyright>
     </package>
 </quiqqer>
