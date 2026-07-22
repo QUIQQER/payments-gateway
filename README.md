@@ -17,6 +17,7 @@ This package is a reference implementation for developers building a gateway-bas
 
 - PHP 8.2 or newer
 - QUIQQER Core 2
+- QUIQQER Order 2.11.2 or newer
 - QUIQQER Payments 4
 
 ## Installation

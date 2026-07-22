@@ -20,6 +20,7 @@
     "require": {
         "php": "^8.2",
         "quiqqer/core": "^2",
+        "quiqqer/order": "^2.11.2",
         "quiqqer/payments": "^4",
         "symfony/http-foundation": "^7.4"
     },
