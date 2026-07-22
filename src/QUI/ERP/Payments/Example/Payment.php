@@ -56,7 +56,6 @@ class Payment extends AbstractPayment
     ): string {
         $Control = new PaymentDisplay();
         $Control->setAttribute('Order', $Order);
-        $Control->setAttribute('Payment', $this);
 
         $Order->setPaymentData('payment-test-gateway-inProcess', 'test-value');
         $Order->update();

@@ -14,5 +14,25 @@
             <de><![CDATA[Dies ist die Beschreibung des Test Payment Gateway]]></de>
             <en><![CDATA[This is a description for the test payment Gateway]]></en>
         </locale>
+        <locale name="payment.submit">
+            <de><![CDATA[Über das Test-Gateway bezahlen]]></de>
+            <en><![CDATA[Pay through the test gateway]]></en>
+        </locale>
+        <locale name="server.order">
+            <de><![CDATA[Bestellung]]></de>
+            <en><![CDATA[Order]]></en>
+        </locale>
+        <locale name="server.articles">
+            <de><![CDATA[Artikel]]></de>
+            <en><![CDATA[Items]]></en>
+        </locale>
+        <locale name="server.pay">
+            <de><![CDATA[Bezahlen]]></de>
+            <en><![CDATA[Pay]]></en>
+        </locale>
+        <locale name="server.cancel">
+            <de><![CDATA[Abbrechen]]></de>
+            <en><![CDATA[Cancel]]></en>
+        </locale>
     </groups>
 </locales>

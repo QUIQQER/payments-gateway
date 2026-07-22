@@ -1,8 +1,6 @@
 <?php
 
-/**
- * This file contains QUI\ERP\Payments\Example\Server\Server
- */
+declare(strict_types=1);
 
 namespace QUI\ERP\Payments\Example\Server;
 
@@ -12,130 +10,107 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * #### IMPORTANT #####
- *
- * - this is just an example of a server to mimic a payment service provider
- * - its only an example, its for development and not for the live usage
- * - This usually does not have to be implemented
- * - This functionality comes from the payment provider
- *
- * @package QUI\ERP\Payments\Gateways\Example
+ * Simulates the external service of a payment provider for demonstration purposes.
  */
 class Server
 {
     /**
-     * on request
-     * we check the PAYMENT_TEST_GATEWAY post value, if exists, we have a payment
-     *
      * @param QUI\Rewrite $Rewrite
-     * @param $url
-     *
-     * @throws QUI\Exception
+     * @param string $url
      */
-    public static function onRequest(QUI\Rewrite $Rewrite, $url)
+    public static function onRequest(QUI\Rewrite $Rewrite, string $url): void
     {
-        if (empty($_POST)) {
+        $Response = self::handleRequest($_POST);
+
+        if ($Response === null) {
             return;
         }
 
-        if (!isset($_POST['PAYMENT_TEST_GATEWAY'])) {
-            return;
+        $Response->send();
+        exit;
+    }
+
+    /**
+     * Build the example provider response for submitted gateway data.
+     *
+     * @param array<string, mixed> $post
+     */
+    public static function handleRequest(array $post, ?Gateway $Gateway = null): ?Response
+    {
+        if (($post['PAYMENT_TEST_GATEWAY'] ?? null) !== '1') {
+            return null;
         }
 
-        if (isset($_POST['submit']) && $_POST['submit'] === 'CANCEL') {
-            // forwarding to the cancel url
-            $Redirect = new RedirectResponse($_POST['cancelUrl']);
-            $Redirect->setStatusCode(Response::HTTP_SEE_OTHER);
+        $orderHash = $post['orderHash'] ?? null;
 
-            echo $Redirect->getContent();
-            $Redirect->send();
-            exit;
+        if (!is_string($orderHash) || trim($orderHash) === '') {
+            return new RedirectResponse(URL_DIR, Response::HTTP_SEE_OTHER);
         }
 
+        $Gateway ??= Gateway::getInstance();
+        $Gateway->setOrder($orderHash);
+        $Order = $Gateway->getOrder();
 
-        // payment
-        if (isset($_POST['submit']) && $_POST['submit'] === 'PAY') {
-            // send payment
-            $Gateway = new QUI\ERP\Accounting\Payments\Gateway\Gateway();
-            $Gateway->setOrder($_POST['orderHash']);
+        if ($Order === null) {
+            return new RedirectResponse(URL_DIR, Response::HTTP_SEE_OTHER);
+        }
 
-            $paymentUrl = $Gateway->getGatewayUrl([
-                Gateway::URL_PARAM_GATEWAY_PAYMENT => 1,
-                Gateway::URL_PARAM_USER_REDIRECTED => 0
-            ]);
+        $submit = $post['submit'] ?? null;
 
-            $query['amount']    = $_POST['pay'];
-            $query['orderHash'] = $_POST['orderHash'];
+        if ($submit === 'CANCEL') {
+            $cancelUrl = $Gateway->getCancelUrl();
 
-            $paymentUrl = $paymentUrl . '&' . \http_build_query($query);
-
-            // send request from the payment provider
-            \file_get_contents($paymentUrl);
-
-            $url = $Gateway->getOrderUrl();
-
-            if (empty($url)) {
-                $url = URL_DIR;
+            if ($cancelUrl === '') {
+                $cancelUrl = $Gateway->getOrderUrl();
             }
 
-            // forwarding to the cancel url
-            $Redirect = new RedirectResponse($url);
-            $Redirect->setStatusCode(Response::HTTP_SEE_OTHER);
-            $Redirect->setContent(
-                'Payment successfully completed. In some Seconds you will be get back to the Order'
+            return new RedirectResponse(
+                $cancelUrl === '' ? URL_DIR : $cancelUrl,
+                Response::HTTP_SEE_OTHER
             );
-
-            $Redirect->headers->set('Refresh', 5);
-
-            echo $Redirect->getContent();
-            $Redirect->send();
-
-            exit;
         }
-
-        if (!isset($_POST['orderId']) || !isset($_POST['orderHash'])) {
-            $Gateway = new QUI\ERP\Accounting\Payments\Gateway\Gateway();
-            $url     = $Gateway->getOrderUrl();
-
-            if (empty($url)) {
-                $url = URL_DIR;
-            }
-
-            $Redirect = new RedirectResponse($url);
-            $Redirect->setStatusCode(Response::HTTP_SEE_OTHER);
-
-            echo $Redirect->getContent();
-            $Redirect->send();
-
-            exit;
-        }
-
-        // $_POST['orderId'];
-        // $_POST['orderUrl'];
-
-        /* @var $Order QUI\ERP\Order\Order */
-        $Gateway = new QUI\ERP\Accounting\Payments\Gateway\Gateway();
-        $Gateway->setOrder($_POST['orderHash']);
-
-        $Order  = $Gateway->getOrder();
-        $Engine = QUI::getTemplateManager()->getEngine();
 
         $Articles = $Order->getArticles();
         $Articles->hideHeader();
         $Articles->calc();
+        $calculated = $Articles->toArray();
+        $amount = $calculated['calculations']['sum'] ?? null;
+
+        if (!is_int($amount) && !is_float($amount) && !is_numeric($amount)) {
+            return new Response('The example gateway could not determine the order amount.', Response::HTTP_BAD_REQUEST);
+        }
+
+        $amount = (float)$amount;
+
+        if ($amount <= 0) {
+            return new Response('The example gateway requires a positive order amount.', Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($submit === 'PAY') {
+            return new RedirectResponse(
+                $Gateway->getGatewayUrl([
+                    Gateway::URL_PARAM_GATEWAY_PAYMENT => 1,
+                    Gateway::URL_PARAM_USER_REDIRECTED => 0,
+                    'amount' => $amount
+                ]),
+                Response::HTTP_SEE_OTHER
+            );
+        }
+
+        try {
+            $Engine = QUI::getTemplateManager()->getEngine();
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::writeException($Exception);
+
+            return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         $Engine->assign([
-            'Order'      => $Order,
-            'Articles'   => $Articles,
-            'calculated' => $Articles->toArray(),
-            'orderId'    => $_POST['orderId'],
-            'orderUrl'   => $_POST['orderUrl'],
-            'gatewayUrl' => $_POST['gatewayUrl'],
-            'cancelUrl'  => $_POST['cancelUrl'],
-            'successUrl' => $_POST['successUrl']
+            'Order' => $Order,
+            'Articles' => $Articles,
+            'calculated' => $calculated
         ]);
 
-        echo $Engine->fetch(\dirname(__FILE__) . '/Server.Result.html');
-        exit;
+        return new Response($Engine->fetch(__DIR__ . '/Server.Result.html'));
     }
 }

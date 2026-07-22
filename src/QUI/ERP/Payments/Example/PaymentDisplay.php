@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace QUI\ERP\Payments\Example;
 
 use QUI;
-use QUI\ERP\Accounting\Payments\Api\AbstractPayment;
-use QUI\ERP\Accounting\Payments\Gateway\Gateway;
 use QUI\ERP\Order\AbstractOrder;
 
 /**
@@ -25,22 +23,13 @@ class PaymentDisplay extends QUI\Control
         }
 
         $Order = $this->getAttribute('Order');
-        $Payment = $this->getAttribute('Payment');
 
-        if (!$Order instanceof AbstractOrder || !$Payment instanceof AbstractPayment) {
+        if (!$Order instanceof AbstractOrder) {
             return '';
         }
 
-        $Gateway = Gateway::getInstance();
-        $Gateway->setOrder($Order);
-
         $Engine->assign([
-            'Order' => $Order,
-            'Payment' => $Payment,
-            'gatewayUrl' => $Gateway->getGatewayUrl(),
-            'cancelUrl' => $Gateway->getCancelUrl(),
-            'successUrl' => $Gateway->getSuccessUrl(),
-            'orderUrl' => $Gateway->getOrderUrl()
+            'Order' => $Order
         ]);
 
         return $Engine->fetch(__DIR__ . '/PaymentDisplay.html');

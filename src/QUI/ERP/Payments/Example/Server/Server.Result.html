@@ -1,24 +1,27 @@
-<form method="POST" action="/">
-    <h1>Order: #{$Order->getId()}</h1>
+<form method="post" action="/">
+    <h1>
+        {locale group="quiqqer/payments-gateway" var="server.order"}
+        #{$Order->getId()|escape:'html'}
+    </h1>
+
+    <section aria-labelledby="example-gateway-articles-title">
+        <h2 id="example-gateway-articles-title">
+            {locale group="quiqqer/payments-gateway" var="server.articles"}
+        </h2>
+
+        {* ArticleList::toHTML() is the established QUIQQER article renderer. *}
+        {$Articles->toHTML()}
+    </section>
 
     <div>
-        <h2>Articles</h2>
-
-        {$Articles->toHTML()}
+        <button type="submit" name="submit" value="PAY">
+            {locale group="quiqqer/payments-gateway" var="server.pay"}
+        </button>
+        <button type="submit" name="submit" value="CANCEL">
+            {locale group="quiqqer/payments-gateway" var="server.cancel"}
+        </button>
     </div>
 
-    <div style="clear: both; margin-top: 20px;">
-        <input type="submit" name="submit" value="PAY" style="width: 200px; padding: 20px; cursor: pointer;"/>
-        <input type="submit" name="submit" value="CANCEL" style="width: 200px; padding: 20px; cursor: pointer;"/>
-    </div>
-
-    <input type="hidden" name="pay" value="{$calculated.calculations.sum}"/>
-    <input type="hidden" name="orderHash" value="{$Order->getHash()}"/>
-
-    <input type="hidden" name="gatewayUrl" value="{$gatewayUrl}"/>
-    <input type="hidden" name="cancelUrl" value="{$cancelUrl}"/>
-    <input type="hidden" name="successUrl" value="{$successUrl}"/>
-    <input type="hidden" name="orderUrl" value="{$orderUrl}"/>
-
-    <input type="hidden" name="PAYMENT_TEST_GATEWAY" value="1"/>
+    <input type="hidden" name="orderHash" value="{$Order->getHash()|escape:'html'}">
+    <input type="hidden" name="PAYMENT_TEST_GATEWAY" value="1">
 </form>
