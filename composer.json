@@ -18,7 +18,7 @@
     "require": {
         "php": "^8.2",
         "quiqqer/core": "^2",
-        "quiqqer/payments": "^2"
+        "quiqqer/payments": "^4"
     },
     "autoload": {
         "psr-4": {
