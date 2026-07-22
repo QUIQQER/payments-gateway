@@ -1,12 +1,8 @@
-<form method="POST" action="/">
-    <input type="hidden" name="PAYMENT_TEST_GATEWAY" value="1"/>
-    <input type="hidden" name="orderHash" value="{$Order->getHash()}"/>
+<form method="post" action="/">
+    <input type="hidden" name="PAYMENT_TEST_GATEWAY" value="1">
+    <input type="hidden" name="orderHash" value="{$Order->getHash()|escape:'html'}">
 
-    <input type="hidden" name="gatewayUrl" value="{$gatewayUrl}"/>
-    <input type="hidden" name="cancelUrl" value="{$cancelUrl}"/>
-    <input type="hidden" name="successUrl" value="{$successUrl}"/>
-    <input type="hidden" name="orderUrl" value="{$orderUrl}"/>
-
-    <input type="submit" value="Pay via the Test Gateway"/>
-    <!--<button name="cancel" class="btn-light" disabled>Cancel payment</button>-->
+    <button type="submit">
+        {locale group="quiqqer/payments-gateway" var="payment.submit"}
+    </button>
 </form>

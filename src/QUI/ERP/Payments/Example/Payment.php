@@ -1,93 +1,61 @@
 <?php
 
-/**
- * This file contains QUI\ERP\Payments\Example\Payment
- */
+declare(strict_types=1);
 
 namespace QUI\ERP\Payments\Example;
 
 use QUI;
-use QUI\ERP\Order\AbstractOrder;
-use QUI\ERP\Accounting\Payments\Transactions\Transaction;
+use QUI\ERP\Accounting\Payments\Api\AbstractPayment;
+use QUI\ERP\Accounting\Payments\Gateway\Gateway;
 use QUI\ERP\Accounting\Payments\Transactions\Factory as TransactionFactory;
+use QUI\ERP\Accounting\Payments\Transactions\Transaction;
+use QUI\ERP\Order\AbstractOrder;
+use QUI\ERP\Order\Controls\AbstractOrderingStep;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class Payment
- * - This class is your main API point for your payment type
- *
- * @package QUI\ERP\Payments\Example\Example
+ * Example implementation of a gateway payment method.
  */
-class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
+class Payment extends AbstractPayment
 {
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->getLocale()->get('quiqqer/payments-gateway', 'payment.title');
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->getLocale()->get('quiqqer/payments-gateway', 'payment.description');
     }
 
-    /**
-     * @param string $hash - Vorgangsnummer - hash number - procedure number
-     * @return bool
-     */
-    public function isSuccessful($hash)
+    public function isSuccessful(string $hash): bool
     {
         try {
-            $Order = QUI\ERP\Order\Handler::getInstance()->getOrderByHash($hash);
-
-            if ($Order->isPaid()) {
-                return true;
-            }
+            return QUI\ERP\Order\Handler::getInstance()->getOrderByHash($hash)->isPaid();
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::writeException($Exception);
+
+            return false;
         }
-
-        // $status = ERP::getPaymentStatus($hash);
-
-        return false;
     }
 
-    /**
-     * Is the payment a gateway payment?
-     *
-     * @return bool
-     */
-    public function isGateway()
+    public function isGateway(): bool
     {
         return true;
     }
 
-    /**
-     * test -> unique
-     */
-    public function isUnique()
+    public function isUnique(): bool
     {
         return false;
     }
 
-    /**
-     * If the Payment method is a payment gateway, it can return a gateway display
-     *
-     * @param AbstractOrder $Order
-     * @param QUI\ERP\Order\Controls\AbstractOrderingStep|null $Step
-     * @return string
-     */
-    public function getGatewayDisplay(AbstractOrder $Order, $Step = null)
-    {
+    public function getGatewayDisplay(
+        AbstractOrder $Order,
+        ?AbstractOrderingStep $Step = null
+    ): string {
         $Control = new PaymentDisplay();
         $Control->setAttribute('Order', $Order);
-        $Control->setAttribute('Payment', $this);
 
         $Order->setPaymentData('payment-test-gateway-inProcess', 'test-value');
         $Order->update();
@@ -96,36 +64,36 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
     }
 
     /**
-     * @param QUI\ERP\Accounting\Payments\Gateway\Gateway $Gateway
      * @throws QUI\Exception
      */
-    public function executeGatewayPayment(QUI\ERP\Accounting\Payments\Gateway\Gateway $Gateway)
+    public function executeGatewayPayment(Gateway $Gateway): void
     {
         if (isset($_REQUEST['canceled'])) {
-            $Redirect = new RedirectResponse($Gateway->getOrderUrl());
-            $Redirect->setStatusCode(Response::HTTP_SEE_OTHER);
-
-            echo $Redirect->getContent();
-            $Redirect->send();
+            (new RedirectResponse($Gateway->getOrderUrl(), Response::HTTP_SEE_OTHER))->send();
 
             return;
         }
 
-        $Order    = $Gateway->getOrder();
-        $amount   = floatval($_REQUEST['amount']);
-        $Currency = $Order->getCurrency();
+        $Order = $Gateway->getOrder();
 
-        // variable payment data
+        if ($Order === null) {
+            throw new QUI\Exception('No order is available for the example gateway payment.');
+        }
+
+        $amount = filter_var($_REQUEST['amount'] ?? null, FILTER_VALIDATE_FLOAT);
+
+        if ($amount === false || $amount <= 0) {
+            throw new QUI\Exception('The example gateway received an invalid payment amount.');
+        }
+
+        $Currency = $Order->getCurrency();
         $paymentData = [
             'payment' => $this->getName(),
-            'title'   => $this->getTitle()
+            'title' => $this->getTitle()
         ];
 
         $Order->setPaymentData('payment-test-gateway-order', 'test-value');
         $Order->update(QUI::getUsers()->getSystemUser());
-
-        // Gateway::paymentError();
-        // Gateway::paymentPending();
 
         QUI\System\Log::writeRecursive([
             $amount,
@@ -135,66 +103,48 @@ class Payment extends QUI\ERP\Accounting\Payments\Api\AbstractPayment
             $paymentData
         ]);
 
-        $Transaction = $Gateway->purchase($amount, $Currency, $Order, $this, $paymentData);
-        //$Transaction->pending();
+        $Gateway->purchase($amount, $Currency, $Order, $this, $paymentData);
     }
 
-
-    /**
-     * This payment has refund support
-     *
-     * @return bool
-     */
-    public function refundSupport()
+    public function refundSupport(): bool
     {
         return true;
     }
 
-    /**
-     * Execute a refund
-     *
-     * @param QUI\ERP\Accounting\Payments\Transactions\Transaction $Transaction
-     * @param $amount
-     * @param string $message
-     * @param string|bool $hash
-     */
     public function refund(
         Transaction $Transaction,
-        $amount,
-        $message = '',
-        $hash = false
-    ) {
-        // example for a refund
-
-        // this here can also run asynchronously or take longer
-        // ....
-        // ....
-
-        // execute this code if the payment refund is successfully done
+        float | int $amount,
+        string $message = '',
+        bool | string $hash = false
+    ): void {
         try {
             if ($hash === false) {
                 $hash = $Transaction->getHash();
             }
 
-            // create a refund transaction
+            $Payment = $Transaction->getPayment();
+
+            if ($Payment === null) {
+                throw new QUI\Exception('The transaction has no payment method.');
+            }
+
             $RefundTransaction = TransactionFactory::createPaymentRefundTransaction(
                 $amount,
                 $Transaction->getCurrency(),
                 $hash,
-                $Transaction->getPayment()->getName(),
+                $Payment->getName(),
                 [
                     'isRefund' => 1,
-                    'message'  => $message
+                    'message' => $message
                 ],
                 null,
                 false,
                 $Transaction->getGlobalProcessId()
             );
 
-            // execute the
             QUI::getEvents()->fireEvent('transactionSuccessfullyRefunded', [
                 $RefundTransaction,
-                $this,
+                $this
             ]);
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::writeDebugException($Exception);

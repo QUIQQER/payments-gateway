@@ -1,30 +1,22 @@
 <?php
 
-/**
- * This file contains QUI\ERP\Accounting\Payments\Provider\Payments
- */
+declare(strict_types=1);
 
 namespace QUI\ERP\Payments\Example\Provider;
 
-use QUI\ERP\Payments\Example;
 use QUI\ERP\Accounting\Payments\Api\AbstractPaymentProvider;
+use QUI\ERP\Payments\Example\Payment;
 
 /**
- * Class Provider
- * - provides the example payment method to the system
- * - You need to create a AbstractPaymentProvider to extend the QUIQQER Payment System with you Payment Type
- *
- * @package QUI\ERP\Payments\Gateways\Example
+ * Registers the example payment method with the QUIQQER payment system.
  */
 class Payments extends AbstractPaymentProvider
 {
     /**
-     * @return array
+     * @return list<class-string>
      */
-    public function getPaymentTypes()
+    public function getPaymentTypes(): array
     {
-        return [
-            Example\Payment::class
-        ];
+        return [Payment::class];
     }
 }

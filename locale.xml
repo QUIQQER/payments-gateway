@@ -2,17 +2,41 @@
 <locales>
     <groups name="quiqqer/payments-gateway" datatype="php,js">
         <locale name="package.title">
-            <de><![CDATA[QUIQQER - Payment - Gateway Beispiel]]></de>
-            <en><![CDATA[QUIQQER - Payment - Gateway Example]]></en>
+            <de><![CDATA[QUIQQER Payment-Gateway-Beispiel]]></de>
+            <en><![CDATA[QUIQQER Payment Gateway Example]]></en>
+        </locale>
+        <locale name="package.description">
+            <de><![CDATA[Beispielmodul für die Implementierung eines Payment-Gateways in QUIQQER.]]></de>
+            <en><![CDATA[Example module demonstrating how to implement a payment gateway in QUIQQER.]]></en>
         </locale>
 
         <locale name="payment.title">
-            <de><![CDATA[Test Payment Gateway]]></de>
-            <en><![CDATA[Test payment Gateway]]></en>
+            <de><![CDATA[Beispiel-Payment-Gateway]]></de>
+            <en><![CDATA[Example payment gateway]]></en>
         </locale>
         <locale name="payment.description">
-            <de><![CDATA[Dies ist die Beschreibung des Test Payment Gateway]]></de>
-            <en><![CDATA[This is a description for the test payment Gateway]]></en>
+            <de><![CDATA[Demonstriert einen vollständigen Payment-Gateway-Ablauf ohne echte Zahlungsabwicklung.]]></de>
+            <en><![CDATA[Demonstrates a complete payment gateway flow without processing real payments.]]></en>
+        </locale>
+        <locale name="payment.submit">
+            <de><![CDATA[Über das Test-Gateway bezahlen]]></de>
+            <en><![CDATA[Pay through the test gateway]]></en>
+        </locale>
+        <locale name="server.order">
+            <de><![CDATA[Bestellung]]></de>
+            <en><![CDATA[Order]]></en>
+        </locale>
+        <locale name="server.articles">
+            <de><![CDATA[Artikel]]></de>
+            <en><![CDATA[Items]]></en>
+        </locale>
+        <locale name="server.pay">
+            <de><![CDATA[Bezahlen]]></de>
+            <en><![CDATA[Pay]]></en>
+        </locale>
+        <locale name="server.cancel">
+            <de><![CDATA[Abbrechen]]></de>
+            <en><![CDATA[Cancel]]></en>
         </locale>
     </groups>
 </locales>
