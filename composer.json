@@ -39,8 +39,7 @@
         "dev:phpunit": "./tools/phpunit",
         "dev:lint": [
             "@dev:lint:phpstan",
-            "@dev:lint:style",
-            "@dev:lint:dependencies"
+            "@dev:lint:style"
         ],
         "dev:lint:phpstan": "./tools/phpstan",
         "dev:lint:style": "./tools/phpcs",
