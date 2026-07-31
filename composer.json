@@ -22,7 +22,7 @@
         "quiqqer/core": "^2",
         "quiqqer/order": "^2.11.2",
         "quiqqer/payments": "^4",
-        "symfony/http-foundation": "^7.4"
+        "symfony/http-foundation": "^7.4 || ^8"
     },
     "autoload": {
         "psr-4": {
