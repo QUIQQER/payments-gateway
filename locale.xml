@@ -4,39 +4,84 @@
         <locale name="package.title">
             <de><![CDATA[QUIQQER Payment-Gateway-Beispiel]]></de>
             <en><![CDATA[QUIQQER Payment Gateway Example]]></en>
+            <es><![CDATA[QUIQQER - Ejemplo de pasarela de pago]]></es>
+            <pt><![CDATA[QUIQQER - Exemplo de gateway de pagamento]]></pt>
+            <fr><![CDATA[QUIQQER - Exemple de passerelle de paiement]]></fr>
+            <it><![CDATA[QUIQQER - Esempio di gateway di pagamento]]></it>
+            <pl><![CDATA[QUIQQER — Przykładowa bramka płatnicza]]></pl>
         </locale>
         <locale name="package.description">
             <de><![CDATA[Beispielmodul für die Implementierung eines Payment-Gateways in QUIQQER.]]></de>
             <en><![CDATA[Example module demonstrating how to implement a payment gateway in QUIQQER.]]></en>
+            <es><![CDATA[Módulo de ejemplo que muestra cómo implementar una pasarela de pago en QUIQQER.]]></es>
+            <pt><![CDATA[Módulo de exemplo que demonstra como implementar um gateway de pagamento no QUIQQER.]]></pt>
+            <fr><![CDATA[Module d'exemple montrant comment intégrer une passerelle de paiement dans QUIQQER.]]></fr>
+            <it><![CDATA[Modulo di esempio che mostra come implementare un gateway di pagamento in QUIQQER.]]></it>
+            <pl><![CDATA[Przykładowy moduł pokazujący, jak zaimplementować bramkę płatniczą w QUIQQER.]]></pl>
         </locale>
 
         <locale name="payment.title">
             <de><![CDATA[Beispiel-Payment-Gateway]]></de>
             <en><![CDATA[Example payment gateway]]></en>
+            <es><![CDATA[Pasarela de pago de ejemplo]]></es>
+            <pt><![CDATA[Gateway de pagamento de exemplo]]></pt>
+            <fr><![CDATA[Passerelle de paiement d'exemple]]></fr>
+            <it><![CDATA[Gateway di pagamento di esempio]]></it>
+            <pl><![CDATA[Przykładowa bramka płatnicza]]></pl>
         </locale>
         <locale name="payment.description">
             <de><![CDATA[Demonstriert einen vollständigen Payment-Gateway-Ablauf ohne echte Zahlungsabwicklung.]]></de>
             <en><![CDATA[Demonstrates a complete payment gateway flow without processing real payments.]]></en>
+            <es><![CDATA[Muestra el proceso completo de una pasarela de pago sin tramitar pagos reales.]]></es>
+            <pt><![CDATA[Demonstra o processo completo de um gateway de pagamento sem processar pagamentos reais.]]></pt>
+            <fr><![CDATA[Présente le parcours complet d'une passerelle de paiement sans traiter de paiements réels.]]></fr>
+            <it><![CDATA[Mostra il flusso completo di un gateway di pagamento senza elaborare pagamenti reali.]]></it>
+            <pl><![CDATA[Prezentuje pełny przebieg płatności przez bramkę bez przetwarzania rzeczywistych płatności.]]></pl>
         </locale>
         <locale name="payment.submit">
             <de><![CDATA[Über das Test-Gateway bezahlen]]></de>
             <en><![CDATA[Pay through the test gateway]]></en>
+            <es><![CDATA[Pagar a través de la pasarela de pruebas]]></es>
+            <pt><![CDATA[Pagar através do gateway de teste]]></pt>
+            <fr><![CDATA[Payer via la passerelle de test]]></fr>
+            <it><![CDATA[Paga tramite il gateway di prova]]></it>
+            <pl><![CDATA[Zapłać przez bramkę testową]]></pl>
         </locale>
         <locale name="server.order">
             <de><![CDATA[Bestellung]]></de>
             <en><![CDATA[Order]]></en>
+            <es><![CDATA[Pedido]]></es>
+            <pt><![CDATA[Encomenda]]></pt>
+            <fr><![CDATA[Commande]]></fr>
+            <it><![CDATA[Ordine]]></it>
+            <pl><![CDATA[Zamówienie]]></pl>
         </locale>
         <locale name="server.articles">
             <de><![CDATA[Artikel]]></de>
             <en><![CDATA[Items]]></en>
+            <es><![CDATA[Artículos]]></es>
+            <pt><![CDATA[Artigos]]></pt>
+            <fr><![CDATA[Articles]]></fr>
+            <it><![CDATA[Articoli]]></it>
+            <pl><![CDATA[Produkty]]></pl>
         </locale>
         <locale name="server.pay">
             <de><![CDATA[Bezahlen]]></de>
             <en><![CDATA[Pay]]></en>
+            <es><![CDATA[Pagar]]></es>
+            <pt><![CDATA[Pagar]]></pt>
+            <fr><![CDATA[Payer]]></fr>
+            <it><![CDATA[Paga]]></it>
+            <pl><![CDATA[Zapłać]]></pl>
         </locale>
         <locale name="server.cancel">
             <de><![CDATA[Abbrechen]]></de>
             <en><![CDATA[Cancel]]></en>
+            <es><![CDATA[Cancelar]]></es>
+            <pt><![CDATA[Cancelar]]></pt>
+            <fr><![CDATA[Annuler]]></fr>
+            <it><![CDATA[Annulla]]></it>
+            <pl><![CDATA[Anuluj]]></pl>
         </locale>
     </groups>
 </locales>
